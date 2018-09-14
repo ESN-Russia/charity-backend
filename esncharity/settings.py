@@ -25,7 +25,7 @@ SECRET_KEY = '!t_v^d157oq5)*b(be-t=9ux_!9n@#k6z9-gq7cp2j1fmp4b4f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -76,11 +77,6 @@ WSGI_APPLICATION = 'esncharity.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
     }
 }
 
@@ -123,5 +119,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-import django_heroku
-django_heroku.settings(locals())
+try:
+    from .settings_local import *
+except Exception as e:
+    import django_heroku
+    django_heroku.settings(locals())
