@@ -4,8 +4,10 @@ from django.db import models
 class CharityLot(models.Model):
     name = models.TextField()
     description = models.TextField(blank=True)
+    seller = models.TextField(blank=True)
+    image_url = models.TextField(blank=True)
 
-    base_cost = models.IntegerField(default=0)
+    minimum_bid = models.IntegerField(default=0)
     start_time = models.DateTimeField(blank=True)
     end_time = models.DateTimeField(blank=True)
 
