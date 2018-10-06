@@ -10,6 +10,7 @@ from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
 
 from .serializers import *
+import api.utils as utils
 
 class CharityLotsList(generics.ListAPIView):
     permission_classes = (AllowAny,)
@@ -33,6 +34,42 @@ class UserInfoView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserResetPassword(views.APIView):
+    def post(self, request):
+        username = request.data["username"];
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({ "status": "user_not_found" })
+
+        new_password = utils.generate_password()
+        user.set_password(new_password)
+        user.save()
+
+        return Response({ "status": "ok" })
+
+
+class UserRegisterView(views.APIView):
+    def post(self, request):
+        username = request.data["username"];
+        first_name = request.data["name"];
+
+        new_password = utils.generate_password()
+        try:
+            user = User.objects.get(username=username)
+            user.set_password(new_password)
+            user.first_name = first_name
+            user.save()
+        except User.DoesNotExist:
+            user = User.objects.create_user(username, username, new_password)
+            user.first_name = first_name
+            user.save()
+
+        print(username, new_password)
+
+        return Response({ "status": "ok" })
 
 
 class AuthLoginView(KnoxLoginView):
