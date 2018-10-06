@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class CharityLot(models.Model):
@@ -13,3 +14,14 @@ class CharityLot(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class CharityBid(models.Model):
+    user = models.ForeignKey(User, related_name="bids", on_delete=None)
+    charity_lot = models.ForeignKey(CharityLot, related_name="bids", on_delete=None)
+
+    bid = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "{} bid {} RUB on {}".format(self.user, self.bid, self.charity_lot)

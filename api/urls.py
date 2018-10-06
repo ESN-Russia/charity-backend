@@ -7,4 +7,5 @@ urlpatterns = [
 
     path('auth/login/', AuthLoginView.as_view()),
     path('auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
+    path('auth/info/', UserInfoView.as_view()),
 ]

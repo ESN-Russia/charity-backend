@@ -12,10 +12,17 @@ from knox.views import LoginView as KnoxLoginView
 from .serializers import *
 
 class CharityLotsList(generics.ListAPIView):
-    # permission_classes = (AllowAny,)
+    permission_classes = (AllowAny,)
 
     queryset = CharityLot.objects.all()
     serializer_class = CharityLotSerializer
+
+class UserInfoView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
 
 
 class AuthLoginView(KnoxLoginView):
