@@ -11,6 +11,7 @@ from knox.views import LoginView as KnoxLoginView
 
 from .serializers import *
 import api.utils as utils
+from mailer.actions import send_password
 
 class CharityLotsList(generics.ListAPIView):
     permission_classes = (AllowAny,)
@@ -48,6 +49,7 @@ class UserResetPassword(views.APIView):
         user.set_password(new_password)
         user.save()
 
+        send_password(user, new_password)
         return Response({ "status": "ok" })
 
 
@@ -67,8 +69,7 @@ class UserRegisterView(views.APIView):
             user.first_name = first_name
             user.save()
 
-        print(username, new_password)
-
+        send_password(user, new_password)
         return Response({ "status": "ok" })
 
 
