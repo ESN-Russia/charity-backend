@@ -9,6 +9,13 @@ class CharityLotSerializer(ModelSerializer):
         model = CharityLot
         fields = '__all__'
 
+
+class CharityBidSerializer(ModelSerializer):
+    class Meta:
+        model = CharityBid
+        fields = ('charity_lot', 'bid', 'created_at')
+
+
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
